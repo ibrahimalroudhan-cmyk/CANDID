@@ -1,0 +1,11 @@
+cff-version: 1.2.0
+message: "If you use this software, please cite it as below."
+title: "CANDID: Canal-tooth ANalysis for Decision-support in Impacted-molar Dentistry"
+type: software
+authors:
+  - family-names: Alroudhan
+    given-names: Ibrahim
+    email: Ibrahim@candidlabs.org
+url: "https://candidlabs.org"
+repository-code: "https://github.com/ibrahimalroudhan-cmyk/CANDID"
+license: Proprietary
