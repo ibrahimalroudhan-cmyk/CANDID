@@ -1,0 +1,10 @@
+__pycache__/
+*.pyc
+.venv/
+.pytest_cache/
+# Imaging data and model weights are never published
+*.nii
+*.nii.gz
+*.dcm
+*.pth
+*.ckpt
