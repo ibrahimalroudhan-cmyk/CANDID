@@ -1,0 +1,41 @@
+# =============================================================================
+# config.yaml  —  Stage 1 (ingest) + Stage 2 (segmentation) configuration
+#
+# IMPORTANT (information governance):
+#   Every path below MUST point inside the APPROVED secure environment when the
+#   input is patient data. Do NOT place patient CBCT on personal/consumer cloud
+#   (e.g. Google Drive). Code and public models may live anywhere; patient
+#   scans and their derived masks may not leave the approved location.
+# =============================================================================
+
+paths:
+  dicom_series: "path/to/dicom_series"   # folder holding ONE CBCT series
+  work_dir:     "work/case001"           # intermediates + outputs (approved location)
+
+model:
+  # Obtain the ToothFairy2 / nnU-Net trained model separately and set these from
+  # ITS documentation. nnU-Net v2 also needs the env var nnUNet_results exported
+  # to point at the results root (see README).
+  nnunet_results: "/models/nnUNet_results"
+  dataset_id:     "112"          # <-- CHECK against the model release
+  configuration:  "3d_fullres"
+  folds:          "all"
+  device:         "cpu"          # M1 native: "mps" (falls back to cpu if unsupported)
+                                 # M1 in Docker: "cpu" (no GPU passthrough on Mac)
+                                 # university box: "cuda"
+
+preprocess:
+  target_spacing_mm: 0.3         # isotropic resample; set from your scans' native voxel size
+
+labels:
+  # ToothFairy2 label map (confirmed for this model release).
+  # Labels 1+2 merged as one mandible — 2 is a class-confusion artefact, treat as bone.
+  mandible:  [1, 2]              # jawbone (merged)
+  iac_left:  3                   # inferior alveolar canal, left
+  iac_right: 4                   # inferior alveolar canal, right
+  tooth_38:  34                  # lower-left third molar (FDI 38)
+  tooth_48:  43                  # lower-right third molar (FDI 48)
+  # FDI 37 / 47 (second molars) have no reliable label — assembled as a voxel
+  # region inside the mandible envelope (labels above) by
+  # extract_masks.assemble_mesial_mandibular_tooth(), not by a label integer.
+  # The envelope excludes maxillary teeth; the region may span several tooth labels.

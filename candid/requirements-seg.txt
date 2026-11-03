@@ -1,0 +1,12 @@
+# CANDID — segmentation stack (Stages 1–2 inference only).
+# Install ONLY on the machine that runs segmentation (likely the CUDA GPU box).
+#
+# Do NOT rely on `pip install nnunetv2` — its metadata is broken upstream.
+# Install nnU-Net from source, PINNED to the version the ToothFairy2 model
+# release specifies, e.g.:
+#     pip install "torch==<match your CUDA>" --index-url https://download.pytorch.org/whl/<cuXXX>
+#     pip install git+https://github.com/MIC-DKFZ/nnUNet.git@<tag-matching-ToothFairy2>
+#
+# Fill these in once you have the model release in hand:
+# torch==            # match the box's CUDA / driver
+# nnunet @ git+https://github.com/MIC-DKFZ/nnUNet.git@<TAG>
